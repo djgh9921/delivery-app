@@ -1,11 +1,14 @@
-import { Request, Response } from 'express'
+import {Request, Response} from 'express'
 import * as service from '../services/cart.service'
-import { asyncHandler } from '../utils/asyncHandler'
+import {asyncHandler} from '../utils/asyncHandler'
 
-const USER_ID = 'demo-user-test-123' // TODO: Replace with real auth
+const getUserId = (req: Request) => {
+    return req.headers['x-user-id'] as string
+}
 
 export const getCart = asyncHandler(async (req: Request, res: Response) => {
-    const data = await service.getCart(USER_ID)
+    const userId = getUserId(req)
+    const data = await service.getCart(userId)
     res.json({
         success: true,
         data
@@ -13,7 +16,8 @@ export const getCart = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const addToCart = asyncHandler(async (req: Request, res: Response) => {
-    const data = await service.addToCart(USER_ID, req.body)
+    const userId = getUserId(req)
+    const data = await service.addToCart(userId, req.body)
     res.status(201).json({
         success: true,
         data
@@ -37,7 +41,8 @@ export const removeItem = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const clearCart = asyncHandler(async (req: Request, res: Response) => {
-    const data = await service.clearCart(USER_ID)
+    const userId = getUserId(req)
+    const data = await service.clearCart(userId)
     res.json({
         success: true,
         data

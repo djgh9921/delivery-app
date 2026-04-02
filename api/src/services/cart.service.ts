@@ -13,7 +13,7 @@ export const getCart = async (userId: string) => {
             )
         `)
         .eq('user_id', userId)
-        .single()
+        .maybeSingle()
 
     // PGRST116 = no rows found
     if (error && error.code !== 'PGRST116') {

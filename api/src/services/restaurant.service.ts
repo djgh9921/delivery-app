@@ -6,7 +6,6 @@ export const getRestaurants = async () => {
         .select('*')
 
     if (error) throw error
-    console.log('Restaurants found', data);
     return data
 }
 
