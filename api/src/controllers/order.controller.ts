@@ -28,8 +28,9 @@ export const getUserOrders = asyncHandler(async (req: Request, res: Response) =>
 
 export const getOrderById = asyncHandler(async (req: Request, res: Response) => {
     const userId = getUserId(req)
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
 
-    const data = await service.getOrderById(userId, req.params.id)
+    const data = await service.getOrderById(userId, id)
     res.json({
         success: true,
         data

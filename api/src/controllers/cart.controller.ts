@@ -25,20 +25,24 @@ export const addToCart = asyncHandler(async (req: Request, res: Response) => {
 })
 
 export const updateItem = asyncHandler(async (req: Request, res: Response) => {
-    const data = await service.updateItem(req.params.id, req.body.quantity)
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+
+    const data = await service.updateItem(id, req.body.quantity);
     res.json({
         success: true,
-        data
-    })
-})
+        data,
+    });
+});
 
 export const removeItem = asyncHandler(async (req: Request, res: Response) => {
-    const data = await service.removeItem(req.params.id)
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+
+    const data = await service.removeItem(id);
     res.json({
         success: true,
-        data
-    })
-})
+        data,
+    });
+});
 
 export const clearCart = asyncHandler(async (req: Request, res: Response) => {
     const userId = getUserId(req)

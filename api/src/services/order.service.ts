@@ -7,6 +7,18 @@ interface CreateOrderData {
     notes?: string
 }
 
+type CartItem = {
+    id: string;
+    product_id: string;
+    price: number;
+    quantity: number;
+    product?: {
+        id: string;
+        name: string;
+        image_url?: string;
+    }
+};
+
 export const createOrder = async (userId: string, orderData: CreateOrderData) => {
     const { data: cart, error: cartError } = await supabase
         .from('carts')
@@ -27,7 +39,7 @@ export const createOrder = async (userId: string, orderData: CreateOrderData) =>
     }
 
     const subtotal = cart.cart_items.reduce(
-        (sum, item) => sum + (item.price * item.quantity),
+        (sum: number, item: CartItem) => sum + (item.price * item.quantity),
         0
     )
 
@@ -63,10 +75,10 @@ export const createOrder = async (userId: string, orderData: CreateOrderData) =>
         throw new AppError('Failed to create order', 500)
     }
 
-    const orderItems = cart.cart_items.map(item => ({
+    const orderItems = cart.cart_items.map((item: CartItem) => ({
         order_id: order.id,
         product_id: item.product_id,
-        product_name: item.product.name,
+        product_name: item.product?.name ?? 'Unknown',
         product_price: item.price,
         quantity: item.quantity
     }))

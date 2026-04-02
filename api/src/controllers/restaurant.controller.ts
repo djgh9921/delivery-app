@@ -9,7 +9,9 @@ export const getRestaurants = asyncHandler(async (req, res) => {
 
 export const getProductsByRestaurant = asyncHandler(
     async (req, res) => {
-        const data = await service.getProductsByRestaurant(req.params.id)
+        const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id
+
+        const data = await service.getProductsByRestaurant(id)
         res.json(data)
     }
 )
