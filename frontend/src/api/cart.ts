@@ -20,8 +20,4 @@ export const cartAPI = {
     removeItem: async (itemId: string): Promise<void> => {
         await api.delete(`/cart/items/${itemId}`)
     },
-
-    clear: async (): Promise<void> => {
-        await api.delete('/cart/clear')
-    }
 }

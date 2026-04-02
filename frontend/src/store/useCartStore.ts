@@ -9,7 +9,6 @@ interface CartStore {
     addToCart: (productId: string, quantity?: number) => Promise<void>
     updateQuantity: (itemId: string, quantity: number) => Promise<void>
     removeFromCart: (itemId: string) => Promise<void>
-    clearCart: () => Promise<void>
     getTotalItems: () => number
     getTotalPrice: () => number
 }
@@ -56,15 +55,6 @@ export const useCartStore = create<CartStore>((set, get) => ({
             await get().fetchCart()
         } catch (error) {
             console.error('Failed to remove from cart:', error)
-        }
-    },
-
-    clearCart: async () => {
-        try {
-            await cartAPI.clear()
-            set({ cart: null })
-        } catch (error) {
-            console.error('Failed to clear cart:', error)
         }
     },
 
