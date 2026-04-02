@@ -1,4 +1,5 @@
 import {supabase} from '../lib/supabase'
+import { AppError } from '../middleware/error.middleware'
 
 export const getRestaurants = async () => {
     const {data, error} = await supabase
@@ -6,6 +7,24 @@ export const getRestaurants = async () => {
         .select('*')
 
     if (error) throw error
+    return data
+}
+
+export const getRestaurantById = async (restaurantId: string) => {
+    const { data, error } = await supabase
+        .from('restaurants')
+        .select('*')
+        .eq('id', restaurantId)
+        .maybeSingle()
+
+    if (error) {
+        throw new AppError('Failed to fetch restaurant', 500)
+    }
+
+    if (!data) {
+        throw new AppError('Restaurant not found', 404)
+    }
+
     return data
 }
 
