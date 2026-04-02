@@ -1,10 +1,19 @@
 import axios from 'axios'
+import {getUserId} from "../utils/user.ts"
 
 export const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
     headers: {
         'Content-Type': 'application/json'
     }
+})
+
+api.interceptors.request.use((config) => {
+    const userId = getUserId()
+
+    config.headers['x-user-id'] = userId
+
+    return config
 })
 
 api.interceptors.response.use(
