@@ -2,6 +2,7 @@ export interface Product {
     id: string
     restaurant_id: string
     category_id: string | null
+    category_name: string,
     name: string
     description: string
     price: number

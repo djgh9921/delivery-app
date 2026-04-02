@@ -1,7 +1,7 @@
-import { supabase } from '../lib/supabase'
+import {supabase} from '../lib/supabase'
 
 export const getRestaurants = async () => {
-    const { data, error } = await supabase
+    const {data, error} = await supabase
         .from('restaurants')
         .select('*')
 
@@ -10,11 +10,17 @@ export const getRestaurants = async () => {
 }
 
 export const getProductsByRestaurant = async (restaurantId: string) => {
-    const { data, error } = await supabase
+    const {data, error} = await supabase
         .from('products')
-        .select('*')
+        .select(`
+            *,
+            categories!inner(name)
+        `)
         .eq('restaurant_id', restaurantId)
 
     if (error) throw error
-    return data
+    return data.map(p => ({
+        ...p,
+        category_name: p.categories?.name ?? 'Other'
+    }))
 }
